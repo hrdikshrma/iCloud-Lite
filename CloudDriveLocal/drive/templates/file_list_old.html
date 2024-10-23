@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Files</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #5b34d4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #4828a4;
+        }
+
+        .home-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .home-button a {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #5b34d4;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .home-button a:hover {
+            background-color: #4828a4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Your Files</h2>
+        <ul>
+            {% for file in files %}
+            <li>
+                {{ file.file.name }}
+		<div class="file-options">
+                    <!-- View button -->
+                    <a href="{{ file.file.url }}" class="view-btn" target="_blank">View</a>
+                    <!-- Download button -->
+                    <a href="{{ file.file.url }}" class="download-btn" download>Download</a>
+                    <!-- Delete button -->
+                    <form method="post" action="{% url 'delete_file' file.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                    </form>
+                </div>
+            </li>
+            {% empty %}
+            <li>No files uploaded yet.</li>
+            {% endfor %}
+        </ul>
+        <div class="home-button">
+            <a href="{% url 'home' %}">Go to Homepage</a>
+        </div>
+    </div>
+</body>
+</html>
